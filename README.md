@@ -1,40 +1,12 @@
-
 # Github Data Analysis
 
-Sean Smith <swsmith@bu.edu> [sean-smith](https://github.com/sean-smith)
+#### Sean Smith, Ann Ming Samborski
+#### {swsmith, asambors}@bu.edu
 
-Ann Ming Samborski <asambors@bu.edu> [asamborski](https://github.com/asamborski)
+> The peregrine falcon (Falco peregrinus), also known as the peregrine, and historically as the duck hawk in North America, is a widespread bird of prey in the family Falconidae. A large, crow-sized falcon, it has a blue-grey back, barred white underparts, and a black head. The peregrine is renowned for its speed, reaching over 320 km/h (200 mph) during its characteristic hunting stoop (high speed dive), making it the fastest member of the animal kingdom.
 
-### Data Source
+## Installation:
 
-We are going to scrape github.com for publically acessible github repositories and collect the following information:
+Create a file `credentials.py` and put github credentials in it:
 
-* stars
-* forks
-* followers
-* owner_id
-* org_name
-* primary_language
-* secondary_language
-* lines_of_code
-* num_contributors
-* first_commit
-* num_pull_requests
-* speaking_language
-* num_commits
-* commit_times
-* loc_per_comit
-* type_of_computer (.DS_Store ftw)
-
-With this data we want to answer a bunch of questions.
-
-1. What are the most popular coding languages? How has this changed over time? 
-2. Given commit times, can we predict number of stars? 
-3. Does lines of code correlate with number of stars?
-4. Do number of contributors correlate with number of stars?
-5. What are the most popular repositories to contribute to?
-6. How does contributions vary by country? By time zone?
-7. Does number of commits correlate with lines of code?
-8. What repository has the most number of commits?
-9. Do organizations have less or more contributors? Lines of code?
-10. Do Chinese speaking people use github? Do they use it in China? (see [great cannon](https://citizenlab.org/2015/04/chinas-great-cannon/) for context)
+	echo -e "username=YOUR_USERNAME\npassword=YOUR_PASSWORD" > credentials.py

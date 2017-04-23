@@ -14,14 +14,14 @@ def get_next_url(link_header):
 def get_repo_names(limit=10):
 	with open('repos.csv', 'a') as repos, open('since.txt', 'r+') as since_f:
 		count = 0
-		since = since_f.read()
+		since = int(since_f.read())
 		while since is not None and count < limit:
 			repositories, since = api("repositories", since)
 			since_f.seek(0)
 			since_f.write(since)
 			since_f.truncate()
 			for repository in repositories:
-				f.write(repository['full_name']+"\n")
+				repos.write(repository['full_name']+"\n")
 			print "Since %s" % since
 			count += 1
 	
@@ -37,4 +37,4 @@ def api(endpoint, since=0):
 		return None
 
 if __name__ == '__main__':
-    get_repo_names(limit=3)
+    get_repo_names(limit=50000)
