@@ -4,6 +4,49 @@ from credentials import username, password
 import collections
 import pandas as pd
 
+def get_url_groups(csv, num, max=600):
+    groups = []
+    tmp = []
+    c = 0
+    count = 0
+    with open(csv, 'r') as f:
+        for url in f:
+        	if count == max:
+        		break
+            if c >= num:
+                groups.append(tmp)
+                c = 0
+                tmp = []
+            if c < num:
+                data = url.split(',')[1].strip('\n')
+                if data == 'urls':
+                    continue
+                else:
+                    tmp += [data]
+                    c += 1
+    return groups
+
+def pywren_it():
+	start = time.time()
+	groups = get_url_groups('repos.csv', 50, max=600)
+	print len(groups)
+	wrenexec = pywren.default_executor()
+	futures = wrenexec.map(do_urls, groups)
+	results = pywren.get_all_results(futures)
+	end = time.time()
+	print("Took %f seconds..." %(end - start))
+
+	for result in results:
+	    for r in result:
+	        if 'Blocked' in r:
+	            print "Blocked", r['Blocked']
+	    result[:] = [x for x in result if not x.get('Blocked')]
+	    df = pd.DataFrame(result, columns=[])
+	    print df
+	    with open('github_data.csv', 'a') as f:
+	        df.to_csv(f, encoding='utf-8', header=f.tell()==0, index=False)
+
+
 def get_languages(repo):
 	languages = api('repos/%s/languages' % repo)
 	stats = collections.Counter(languages)
@@ -82,4 +125,4 @@ def api(endpoint):
 		return None
 
 if __name__ == '__main__':
-	get_repo_deets(limit=1)
+	get_repo_deets(limit=2500)

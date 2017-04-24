@@ -1,1 +1,1 @@
-madsimian/masquerade
+reinh/idiomatic-ruby
