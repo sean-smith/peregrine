@@ -1,1 +1,1 @@
-reinh/idiomatic-ruby
+joevandyk/friendly_id

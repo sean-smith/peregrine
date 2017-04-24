@@ -1,6 +1,6 @@
 import requests
 from pprint import pprint
-from credentials import username, password
+from credentials import access_token
 import collections
 import pandas as pd
 
@@ -16,13 +16,12 @@ def get_repo_deets(limit=10, in_done=True):
 	open('last.txt', 'r+') as last:
 		last_done = last.read();
 		print "last_done = [%s]" % last_done
-		if last_done[-1] == '\n':
-			last_done = last_done[:-1]
+		last_done = last_done.strip('\n')
 		for repo in repos:
 			# Strip off trailing \n
-			repo = repo[:-1]
+			repo = repo.strip('\n')
 			if in_done:
-				if last_done in repo:
+				if last_done == repo:
 					in_done = False
 				print "Skipping [%s]" % repo
 				continue
@@ -32,6 +31,8 @@ def get_repo_deets(limit=10, in_done=True):
 			try:
 				# repo = 'facebook/react-native'
 				json = api("repos/%s" % repo)
+				if json == 1:
+					break
 				if json is not None:
 					d = {}
 					d['forks'] = json['forks_count']
@@ -73,13 +74,19 @@ def get_repo_deets(limit=10, in_done=True):
 
 			
 def api(endpoint):
-	r = requests.get("https://%s:%s@api.github.com/%s" % (username, password, endpoint))
+	params = {
+		"access_token": access_token
+	}
+	r = requests.get("https://api.github.com/%s" % (endpoint), params=params)
 	if r.status_code == 200:
 		print "Requests Remaining: %s" % r.headers['X-RateLimit-Remaining']
 		return r.json()
+	elif r.headers['X-RateLimit-Remaining'] == '0':
+		print "[%d] <%s>\n%s" % (r.status_code, r.url, r.text)
+		return 1
 	else:
 		print "[%d] <%s>\n%s" %(r.status_code, r.url, r.text)
 		return None
 
 if __name__ == '__main__':
-	get_repo_deets(limit=1)
+	get_repo_deets(limit=6250)
