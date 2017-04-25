@@ -64,12 +64,12 @@ def pywren_it(max_executions=600, num_in_group=30):
 			df = pd.DataFrame([repo], columns=['name', 'owner', 'watchers', 'stars', 'forks', 'type', 'issues', 'created_at', 'pushed_at', 'updated_at', 'size', 'open_issues_count', 'description', 'num_languages', 'language_1', 'language_1_size', 'language_2', 'language_2_size', 'language_3', 'language_3_size'])
 			with open('github_data.csv', 'a') as f:
 				df.to_csv(f, encoding='utf-8', header=f.tell()==0, index=False)
-				print "success %s" % repo
+				# print "success %s" % repo
 			succcess_count += 1
 
 		with open('failed.csv', 'a') as f:
 			for repo in failed:
-				print "failed %s" % repo
+				# print "failed %s" % repo
 				f.write(repo+'\n')
 				failure_count += 1
 
@@ -128,6 +128,7 @@ def get_repo_deets(repos):
 
 			
 def api(endpoint):
+	# params = {'access_token': access_token}
 	r = requests.get("https://api.github.com/%s" % (endpoint))
 	if r.status_code == 200:
 		print "Requests Remaining: %s" % r.headers['X-RateLimit-Remaining']
@@ -137,4 +138,4 @@ def api(endpoint):
 		return None
 
 if __name__ == '__main__':
-	pywren_it(max_executions=600, num_in_group=30)
+	pywren_it(max_executions=125, num_in_group=25)
