@@ -138,4 +138,4 @@ def api(endpoint):
 		return None
 
 if __name__ == '__main__':
-	pywren_it(max_executions=100, num_in_group=24)
+	pywren_it(max_executions=250, num_in_group=25)
