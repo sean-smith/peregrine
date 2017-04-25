@@ -128,8 +128,8 @@ def get_repo_deets(repos):
 
 			
 def api(endpoint):
-	# params = {'access_token': access_token}
-	r = requests.get("https://api.github.com/%s" % (endpoint))
+	params = {'access_token': access_token}
+	r = requests.get("https://api.github.com/%s" % (endpoint), params=params)
 	if r.status_code == 200:
 		print "Requests Remaining: %s" % r.headers['X-RateLimit-Remaining']
 		return r.json()
@@ -138,4 +138,4 @@ def api(endpoint):
 		return None
 
 if __name__ == '__main__':
-	pywren_it(max_executions=125, num_in_group=25)
+	pywren_it(max_executions=134, num_in_group=18)
