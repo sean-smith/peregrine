@@ -1,6 +1,6 @@
 import requests
 from pprint import pprint
-from credentials import username, password
+from credentials import access_token
 import re
 
 def get_next_url(link_header):
@@ -26,8 +26,8 @@ def get_repo_names(limit=10):
 			count += 1
 	
 def api(endpoint, since=0):
-	data = {"since": since}
-	r = requests.get("https://%s:%s@api.github.com/%s" % (username, password, endpoint), params=data)
+	data = {'access_token': access_token, "since": since}
+	r = requests.get("https://api.github.com/%s" % (endpoint), params=data)
 	if r.status_code == 200:
 		since = get_next_url(r.headers['Link'])
 		print "Requests Remaining: %s" % r.headers['X-RateLimit-Remaining']
