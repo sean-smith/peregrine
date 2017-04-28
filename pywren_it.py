@@ -5,13 +5,14 @@ import pandas as pd
 import time
 import pywren
 from credentials import access_token
+import os
 
 def get_url_groups(csv, num_in_group, max_groups=600, in_done=True):
 	groups = []
 	tmp = []
 	c = 0
 	count = 0
-	with open('./last.txt', 'r+') as last, open(csv, 'r') as f:
+	with open('%s/last.txt' % os.getcwd(), 'r+') as last, open('%s/%s' % (os.getcwd(), csv), 'r') as f:
 		last_done = last.read();
 		last_done = last_done.strip('\n')
 		print("last_done = [%s]" % last_done)
@@ -39,7 +40,7 @@ def get_url_groups(csv, num_in_group, max_groups=600, in_done=True):
 
 def pywren_it(max_executions=600, num_in_group=30):
 	start = time.time()
-	groups = get_url_groups('./repos.csv', num_in_group=num_in_group, max_groups=max_executions)
+	groups = get_url_groups('repos.csv', num_in_group=num_in_group, max_groups=max_executions)
 	print(groups)
 	print("%d Groups Running, each with %d repos..." % (len(groups), num_in_group))
 	# for group in groups:
@@ -61,12 +62,12 @@ def pywren_it(max_executions=600, num_in_group=30):
 		for repo in success:
 			print("success: %s" % repo)
 			df = pd.DataFrame([repo], columns=['name', 'owner', 'watchers', 'stars', 'forks', 'type', 'issues', 'created_at', 'pushed_at', 'updated_at', 'size', 'open_issues_count', 'description', 'num_languages', 'language_1', 'language_1_size', 'language_2', 'language_2_size', 'language_3', 'language_3_size'])
-			with open('./github_data.csv', 'a') as f:
+			with open('%s/github_data.csv' % os.getcwd(), 'a') as f:
 				df.to_csv(f, encoding='utf-8', header=f.tell()==0, index=False)
 				# print("success %s" % repo)
 			succcess_count += 1
 
-		with open('./failed.csv', 'a') as f:
+		with open('%s/failed.csv' % os.getcwd(), 'a') as f:
 			for repo in failed:
 				# print("failed %s" % repo)
 				f.write(repo+'\n')
