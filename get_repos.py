@@ -37,4 +37,4 @@ def api(endpoint, since=0):
 		return None
 
 if __name__ == '__main__':
-    get_repo_names(limit=50000)
+    get_repo_names(limit=12500)
